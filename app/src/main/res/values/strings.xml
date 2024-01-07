@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Setara</string>
+    <string name="title_activity_main_activity">MainActivity</string>
+    <string name="title_activity_option_login">OptionLogin</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="login_text">Login</string>
+    <string name="signup_text">Sign Up</string>
+    <string name="email_inputtext">Email</string>
+    <string name="password_inputtext">Password</string>
+    <string name="login_button">Login</string>
+</resources>
