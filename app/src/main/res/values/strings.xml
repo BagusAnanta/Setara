@@ -9,4 +9,6 @@
     <string name="email_inputtext">Email</string>
     <string name="password_inputtext">Password</string>
     <string name="login_button">Login</string>
+    <string name="signup_button">Sign Up</string>
+    <string name="title_activity_alert_dialog_costume">AlertDialogCostume</string>
 </resources>
