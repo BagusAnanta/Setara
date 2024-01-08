@@ -1,5 +1,8 @@
 package com.bsoftware.setara
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,7 +41,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bsoftware.setara.firebase.FirebaseAuthentication
 import com.bsoftware.setara.ui.theme.SetaraTheme
+import com.bsoftware.setara.ui.theme.elementWidget.AlertDialogCostumeView
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +70,26 @@ fun LoginActivityView(){
 
     var passwordVisible by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+
+    val context : Context = LocalContext.current
+    val activity : Activity = LoginActivity()
+    val firebaseAuth = FirebaseAuthentication()
+
+    val showDialogAlert = remember { mutableStateOf(false) }
+    var alertMessage by remember { mutableStateOf("") }
+
+    // alert dialog
+    // if a true value
+    if(showDialogAlert.value){
+        AlertDialogCostumeView(
+            title = "Ooops",
+            message = alertMessage,
+            setDialog = {showDialogAlert.value = it}
+        ) {
+            // if a click, we change to false again
+            showDialogAlert.value = false
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -127,7 +153,27 @@ fun LoginActivityView(){
         )
 
         OutlinedButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                firebaseAuth.apply {
+                    initFirebaseAuth()
+                    loginDataUser(
+                        email = email,
+                        password = password,
+                        onSuccess = {
+                            // intent into dashboard
+                            context.startActivity(Intent(context,DashboardActivity::class.java))
+                            activity.finish()
+                        },
+                        onFailed = {
+                            // on failed in here
+                            // if a fail
+                            alertMessage = "You username or password login wrong, please try again"
+                            showDialogAlert.value = true
+                        },
+                        activity = activity
+                    )
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 25.dp, end = 25.dp, top = 10.dp)

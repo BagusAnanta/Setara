@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296508103532",
+    "project_id": "setaraapps",
+    "storage_bucket": "setaraapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296508103532:android:a5d1add084b2f3e5dd3149",
+        "android_client_info": {
+          "package_name": "com.bsoftware.setara"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKstxFlnMxKv7HYYGE8sf8FWsvvuzOFTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
