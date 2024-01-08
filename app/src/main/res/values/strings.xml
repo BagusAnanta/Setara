@@ -10,5 +10,18 @@
     <string name="password_inputtext">Password</string>
     <string name="login_button">Login</string>
     <string name="signup_button">Sign Up</string>
+    <string name="level_sign">Lv. %s</string>
+    <string name="search_sign">Search</string>
+    <string name="streak_sign">Streak</string>
+    <string name="action_sign">Action</string>
+    <string name="category_sign">Category</string>
+    <string name="softskill_sign">Soft Skills</string>
+    <string name="hardskill_sign">Hard Skills</string>
+    <string name="videooption_sign">Video Option</string>
+    <string name="videosoftskill_sign">Soft Skills</string>
+    <string name="trancript_sign">Video Transcript</string>
     <string name="title_activity_alert_dialog_costume">AlertDialogCostume</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_video_option">VideoOptionActivity</string>
+    <string name="title_activity_video_player_soft_skill">VideoPlayerSoftSkillActivity</string>
 </resources>

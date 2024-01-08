@@ -13,6 +13,21 @@
         android:theme="@style/Theme.Setara"
         tools:targetApi="31">
         <activity
+            android:name=".VideoPlayerSoftSkillActivity"
+            android:exported="false"
+            android:label="@string/title_activity_video_player_soft_skill"
+            android:theme="@style/Theme.Setara" />
+        <activity
+            android:name=".VideoOptionActivity"
+            android:exported="false"
+            android:label="@string/title_activity_video_option"
+            android:theme="@style/Theme.Setara" />
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/Theme.Setara" />
+        <activity
             android:name=".OptionLogin"
             android:exported="true"
             android:label="@string/title_activity_option_login"
