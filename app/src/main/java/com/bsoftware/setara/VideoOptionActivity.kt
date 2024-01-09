@@ -1,8 +1,11 @@
 package com.bsoftware.setara
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -111,6 +115,7 @@ fun VideoOptionActivityContect(innerPadding : PaddingValues){
 
 @Composable
 fun VideoPreview(){
+    val context : Context = LocalContext.current
     Column(
         modifier = Modifier
             .padding(start = 10.dp, end = 10.dp, top = 10.dp),
@@ -120,6 +125,10 @@ fun VideoPreview(){
             modifier = Modifier
                 .fillMaxWidth()
                 .height(250.dp)
+                .clickable {
+                    // intent
+                    context.startActivity(Intent(context,VideoPlayerSoftSkillActivity::class.java))
+                }
         ) {
 
         }

@@ -1,5 +1,7 @@
 package com.bsoftware.setara
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -114,6 +117,8 @@ fun DashboardActivityContent(innerPadding : PaddingValues){
 
     var streak by remember { mutableStateOf(0) }
     var action by remember { mutableStateOf(0) }
+
+    val context : Context = LocalContext.current
 
     LazyColumn(
         contentPadding = innerPadding,
@@ -218,7 +223,10 @@ fun DashboardActivityContent(innerPadding : PaddingValues){
                             .padding(top = 10.dp)
                             .wrapContentWidth(Alignment.CenterHorizontally)
                     ){
-                        Button(onClick = { /*TODO*/ }) {
+                        Button(onClick = {
+                            // intent
+                            context.startActivity(Intent(context,VideoOptionActivity::class.java))
+                        }) {
                             Text(
                                 text = stringResource(id = R.string.softskill_sign),
                                 style = TextStyle(

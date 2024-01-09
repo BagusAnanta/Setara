@@ -1,8 +1,11 @@
 package com.bsoftware.setara
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +40,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.bsoftware.setara.ui.theme.SetaraTheme
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
+import com.google.firebase.storage.FirebaseStorage
+
 
 class VideoPlayerSoftSkillActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,19 +111,47 @@ fun VideoPlayerSoftSkillActivityView(){
 
 @Composable
 fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues){
+    var urlData by remember { mutableStateOf("") }
+
+    // example url
+    // val urlVideo = urlData
+    // Log.d("UrlVideo", urlVideo)
+    // val urlVideo = "https://firebasestorage.googleapis.com/v0/b/setaraapps.appspot.com/o/Bagaimana%20cara%20kerja%20Televisi%20Satelit_.mp4?alt=media&token=d6c7243f-2e9f-4162-90fd-28a22591ce43"
+    val context : Context = LocalContext.current
+    urlData = "Bagaimana cara kerja Televisi Satelit_.mp4"
+
     LazyColumn(
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
     ){
         item {
-            Card(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(start = 10.dp, end = 10.dp)
+                    .height(300.dp)
             ) {
+                // exo player at here
+                val exoPlayer = remember(context){
+                    ExoPlayer.Builder(context).build().apply {
+                        val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context,context.packageName))
+                        // get url from firebase storage
+                        FirebaseStorage.getInstance().getReference(urlData).downloadUrl
+                            .addOnSuccessListener { url ->
+                                val sourceLink = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(url))
+                                prepare(sourceLink)
+                            }
+                            .addOnFailureListener {
+                                    fail -> Log.e("Get Uri Error", fail.toString())
+                            }
+                    }
+                }
 
+                AndroidView(factory = {context ->
+                    PlayerView(context).apply {
+                        player = exoPlayer
+                    }
+                })
             }
 
             Text(
