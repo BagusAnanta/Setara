@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.bsoftware.setara.firebase.FirebaseRealtime
 import com.bsoftware.setara.ui.theme.SetaraTheme
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -61,7 +63,22 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    VideoPlayerSoftSkillActivityView()
+                    val videoId by remember { mutableStateOf("Video1") }
+                    var title by remember { mutableStateOf("") }
+                    var subtitle by remember { mutableStateOf("") }
+                    var urlVideo by remember { mutableStateOf("") }
+
+                    // get a data from id
+                    FirebaseRealtime().apply {
+                        getDataVideoWithId(videoId = videoId).forEach {
+                            title = it.title.toString()
+                            subtitle = it.subtitle.toString()
+                            urlVideo = it.link.toString()
+
+                            VideoPlayerSoftSkillActivityView(title,subtitle,urlVideo)
+                        }
+                    }
+
                 }
             }
         }
@@ -70,10 +87,8 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VideoPlayerSoftSkillActivityView(){
+fun VideoPlayerSoftSkillActivityView(titleVideo : String,subtitle: String,linkVideo : String){
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    var titleVideo by remember{ mutableStateOf("Video 1") }
 
     Scaffold(
         modifier = Modifier
@@ -105,20 +120,13 @@ fun VideoPlayerSoftSkillActivityView(){
             )
         },
     ){innerPadding ->
-        VideoPlayerSoftSkillActivityContent(innerPadding = innerPadding)
+        VideoPlayerSoftSkillActivityContent(innerPadding = innerPadding,subtitle,linkVideo)
     }
 }
 
 @Composable
-fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues){
-    var urlData by remember { mutableStateOf("") }
-
-    // example url
-    // val urlVideo = urlData
-    // Log.d("UrlVideo", urlVideo)
-    // val urlVideo = "https://firebasestorage.googleapis.com/v0/b/setaraapps.appspot.com/o/Bagaimana%20cara%20kerja%20Televisi%20Satelit_.mp4?alt=media&token=d6c7243f-2e9f-4162-90fd-28a22591ce43"
+fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle : String, urlVideo : String){
     val context : Context = LocalContext.current
-    urlData = "Bagaimana cara kerja Televisi Satelit_.mp4"
 
     LazyColumn(
         contentPadding = innerPadding,
@@ -135,17 +143,12 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues){
                 val exoPlayer = remember(context){
                     ExoPlayer.Builder(context).build().apply {
                         val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context,context.packageName))
-                        // get url from firebase storage
-                        FirebaseStorage.getInstance().getReference(urlData).downloadUrl
-                            .addOnSuccessListener { url ->
-                                val sourceLink = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(url))
-                                prepare(sourceLink)
-                            }
-                            .addOnFailureListener {
-                                    fail -> Log.e("Get Uri Error", fail.toString())
-                            }
+                        Log.d("ExoPlayer Url", urlVideo)
+                        val sourceLink = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(urlVideo))
+                        prepare(sourceLink)
                     }
                 }
+
 
                 AndroidView(factory = {context ->
                     PlayerView(context).apply {
@@ -159,6 +162,9 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues){
                 modifier = Modifier
                     .padding(start = 10.dp,top = 10.dp)
             )
+            Text(
+                text = subtitle
+            )
         }
     }
 }
@@ -167,6 +173,6 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues){
 @Composable
 fun VideoPlayerSoftSkillActivityPreview() {
     SetaraTheme {
-        VideoPlayerSoftSkillActivityView()
+        // VideoPlayerSoftSkillActivityView()
     }
 }
