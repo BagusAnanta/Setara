@@ -1,6 +1,7 @@
 package com.bsoftware.setara
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.bsoftware.setara.firebase.FirebaseRealtime
+import com.bsoftware.setara.sharePreference.VideoIdSharePref
 import com.bsoftware.setara.ui.theme.SetaraTheme
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -63,11 +65,17 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val videoId by remember { mutableStateOf("Video1") }
+                    val activity = VideoPlayerSoftSkillActivity()
+                    // Null Pointer exception at here
+                    // you get a video Id from a option before in videoOption
+                    var videoId by remember { mutableStateOf("") }
+
                     var title by remember { mutableStateOf("") }
                     var subtitle by remember { mutableStateOf("") }
                     var urlVideo by remember { mutableStateOf("") }
 
+                    videoId = intent.getStringExtra("id").toString()
+                    Log.d("VideoId", videoId)
                     // get a data from id
                     FirebaseRealtime().apply {
                         getDataVideoWithId(videoId = videoId).forEach {
@@ -173,6 +181,21 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
 @Composable
 fun VideoPlayerSoftSkillActivityPreview() {
     SetaraTheme {
-        // VideoPlayerSoftSkillActivityView()
+        val videoId by remember { mutableStateOf("Video1") }
+
+        var title by remember { mutableStateOf("") }
+        var subtitle by remember { mutableStateOf("") }
+        var urlVideo by remember { mutableStateOf("") }
+
+        // get a data from id
+        FirebaseRealtime().apply {
+            getDataVideoWithId(videoId = videoId).forEach {
+                title = it.title.toString()
+                subtitle = it.subtitle.toString()
+                urlVideo = it.link.toString()
+
+                VideoPlayerSoftSkillActivityView(title,subtitle,urlVideo)
+            }
+        }
     }
 }

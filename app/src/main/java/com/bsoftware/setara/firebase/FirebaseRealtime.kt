@@ -19,6 +19,10 @@ import com.google.firebase.database.database
 class FirebaseRealtime {
     private var databaseReference = Firebase.database.getReference("VideoSelfImprove")
 
+    fun getReference() : DatabaseReference{
+        return databaseReference
+    }
+
     fun writeDataVideo(title : String, subtitle : String){
         val getuuId = GetUuid().getUuidCode()
         val videoData = VideoSoftSkillDataClass(getuuId,title, subtitle)
@@ -32,41 +36,6 @@ class FirebaseRealtime {
     }
 
 
-    @Composable
-    fun getAllDataVideo() : SnapshotStateList<VideoSoftSkillDataClass>{
-        val dataList = remember { mutableStateListOf<VideoSoftSkillDataClass>() }
-
-        LaunchedEffect(databaseReference){
-            val postListener = object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.exists()){
-                        dataList.clear()
-
-                        for(projectSnapshot in snapshot.children){
-                            val dataMap = projectSnapshot.value as? Map<*, *>?
-
-                            if(dataMap != null){
-                                val videoSoftSkillDataClass = VideoSoftSkillDataClass(
-                                    videoId = dataMap["videoId"] as? String ?: "",
-                                    title = dataMap["title"] as? String ?: "",
-                                    subtitle = dataMap["subtitle"] as? String ?: "",
-                                    link = dataMap["link"] as? String ?: ""
-                                )
-                                dataList.add(videoSoftSkillDataClass)
-                            }
-                        }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("getAllDataVideo() Error", error.toString())
-                }
-
-            }
-            databaseReference.addValueEventListener(postListener)
-        }
-        return dataList
-    }
 
     @Composable
     fun getDataVideoWithId(videoId : String) : SnapshotStateList<VideoSoftSkillDataClass>{
@@ -80,7 +49,8 @@ class FirebaseRealtime {
                         videoId = snapshot.child("videoId").getValue(String::class.java),
                         title = snapshot.child("title").getValue(String::class.java),
                         subtitle = snapshot.child("subtitle").getValue(String::class.java),
-                        link = snapshot.child("link").getValue(String::class.java)
+                        link = snapshot.child("link").getValue(String::class.java),
+                        thumbnail = snapshot.child("thumbnail").getValue(String::class.java)
                     )
                     dataList.add(videoSoftSkillDataClass)
                 }
