@@ -20,7 +20,7 @@ FutureWithGoogle have a great team inside, there are 3 great people
      - Position : Hacker
      - University : Sriwijaya State Polytechnic
   2. Team Member 1
-     - Name : Cindy
+     - Name : Cindy Putri Az Zahra
      - Position : Hipster
      - University : Sriwijaya University
   3. Team Member 2
@@ -71,7 +71,7 @@ this app use technology Android Native Platform such :
 2. Kotlin
 3. Firebase
 
-## Credit
+## Credits
 All this asseth like video, image, or more for use this app it's a use for test this apps, no for sell or public. For Respect a creator a video, developer write a link a video source
 
 1.[ Laboratorium Riset Bahasa Isyarat (Konjungsi: Sebab-Akibat)](https://youtu.be/8TlF1BCfOuc?si=f8gfdAeHiC1fj23N).
