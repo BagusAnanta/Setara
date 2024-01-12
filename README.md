@@ -2,7 +2,7 @@
 
 ### Login User Email and Password Test
 if you want test this application, you can use this example email and password
-  - Email : usertest@gmail.com (lowercast only)
+  - Email : usertest@gmail.com (lowercase only)
   - Password : T3stUser# (Combine)
 
 > **Note** :
