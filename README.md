@@ -1,4 +1,4 @@
-# Setara V.Beta0.1 (HackFest 2024 Project)
+# Setara V.Beta0.1
 
 ### Login User Email and Password Test
 if you want test this application, you can use this example email and password
