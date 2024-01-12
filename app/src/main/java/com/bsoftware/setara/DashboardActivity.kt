@@ -5,17 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
@@ -41,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +54,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.bsoftware.setara.dataClass.VideoSoftSkillDataClass
+import com.bsoftware.setara.firebase.FirebaseRealtime
 import com.bsoftware.setara.ui.theme.SetaraTheme
 
 class DashboardActivity : ComponentActivity() {
@@ -117,136 +126,188 @@ fun DashboardActivityContent(innerPadding : PaddingValues){
 
     var streak by remember { mutableStateOf(0) }
     var action by remember { mutableStateOf(0) }
+    
+    val firebaseRealtime = FirebaseRealtime().getDataVideoAll()
 
     val context : Context = LocalContext.current
 
-    LazyColumn(
-        contentPadding = innerPadding,
+    Column(
         modifier = Modifier
             .fillMaxSize()
-    ){
-        item {
-            Column {
-                OutlinedTextField(
-                    value = search,
-                    onValueChange = {search = it},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp, top = 5.dp),
-                    label = {
-                        Text(text = stringResource(id = R.string.search_sign))
-                    },
-                )
+            .padding(top = 60.dp)
+    ) {
+        // search bar
+        OutlinedTextField(
+            value = search,
+            onValueChange = {search = it},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp, top = 5.dp),
+            label = {
+                Text(text = stringResource(id = R.string.search_sign))
+            },
+        )
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(30.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .size(100.dp, 100.dp)
-                            .fillMaxSize(),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(
-                                text = streak.toString(),
-                                style = TextStyle(
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = stringResource(id = R.string.streak_sign),
-                                style = TextStyle(
-                                    fontSize = 15.sp
-                                )
-                            )
-                        }
-                    }
-
-                    Card(
-                        modifier = Modifier
-                            .size(100.dp, 100.dp)
-                            .fillMaxSize(),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(
-                                text = action.toString(),
-                                style = TextStyle(
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = stringResource(id = R.string.action_sign),
-                                style = TextStyle(
-                                    fontSize = 15.sp
-                                )
-                            )
-                        }
-                    }
-                }
-
+        // streak and action
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(30.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally)
+        ) {
+            Card(
+                modifier = Modifier
+                    .size(100.dp, 100.dp)
+                    .fillMaxSize(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = stringResource(id = R.string.category_sign),
+                        text = streak.toString(),
                         style = TextStyle(
                             fontSize = 20.sp,
-                        ),
-                        modifier = Modifier
-                            .padding(10.dp)
+                            fontWeight = FontWeight.Bold
+                        )
                     )
+                    Text(
+                        text = stringResource(id = R.string.streak_sign),
+                        style = TextStyle(
+                            fontSize = 15.sp
+                        )
+                    )
+                }
+            }
 
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(30.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp)
-                            .wrapContentWidth(Alignment.CenterHorizontally)
-                    ){
-                        Button(onClick = {
-                            // intent
-                            context.startActivity(Intent(context,VideoOptionActivity::class.java))
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.softskill_sign),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
-
-                        Button(onClick = { /*TODO*/ }) {
-                            Text(
-                                text = stringResource(id = R.string.hardskill_sign),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
-                    }
+            Card(
+                modifier = Modifier
+                    .size(100.dp, 100.dp)
+                    .fillMaxSize(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = action.toString(),
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Text(
+                        text = stringResource(id = R.string.action_sign),
+                        style = TextStyle(
+                            fontSize = 15.sp
+                        )
+                    )
                 }
             }
         }
+
+        // menu
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.category_sign),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                ),
+                modifier = Modifier
+                    .padding(10.dp)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(30.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            ){
+                Button(onClick = {
+                    // intent
+                    context.startActivity(Intent(context,VideoOptionActivity::class.java))
+                }) {
+                    Text(
+                        text = stringResource(id = R.string.selfimprove_sign),
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+
+                Button(onClick = { /*TODO*/ }) {
+                    Text(
+                        text = stringResource(id = R.string.hardskill_sign),
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+        }
+
+        // Recommendation
+        Text(
+            text = stringResource(id = R.string.recommendation_sign),
+            style = TextStyle(
+                fontSize = 20.sp,
+            ),
+            modifier = Modifier
+                .padding(10.dp)
+        )
+        LazyColumn{
+            items(firebaseRealtime){videoData ->
+                RecommendVideo(videoSoftSkillDataClass = videoData)
+            }
+        }
+    }
+}
+
+@Composable
+fun RecommendVideo(videoSoftSkillDataClass: VideoSoftSkillDataClass){
+    val context : Context = LocalContext.current
+    var videoId by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .padding(start = 10.dp, end = 10.dp, top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ){
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+                .clickable {
+                    // intent
+                    videoId = videoSoftSkillDataClass.videoId.toString()
+                    val intent = Intent(context, VideoPlayerSoftSkillActivity::class.java)
+                    intent.putExtra("id", videoId)
+                    context.startActivity(intent)
+                }
+        ) {
+            AsyncImage(
+                model = videoSoftSkillDataClass.thumbnail,
+                contentDescription = "ExampleThumbnail",
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Text(
+            text = videoSoftSkillDataClass.title!!
+        )
     }
 }
 

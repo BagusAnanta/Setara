@@ -35,6 +35,44 @@ class FirebaseRealtime {
             }
     }
 
+    @Composable
+    fun getDataVideoAll() : SnapshotStateList<VideoSoftSkillDataClass>{
+        val dataList = remember { mutableStateListOf<VideoSoftSkillDataClass>() }
+
+        LaunchedEffect(databaseReference) {
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        dataList.clear()
+
+                        for (projectSnapshot in snapshot.children) {
+                            val dataMap = projectSnapshot.value as? Map<*, *>?
+
+                            if (dataMap != null) {
+                                val videoSoftSkillDataClass = VideoSoftSkillDataClass(
+                                    videoId = dataMap["videoId"] as? String ?: "",
+                                    title = dataMap["title"] as? String ?: "",
+                                    subtitle = dataMap["subtitle"] as? String ?: "",
+                                    link = dataMap["link"] as? String ?: "",
+                                    thumbnail = dataMap["thumbnail"] as? String ?: ""
+                                )
+                                dataList.add(videoSoftSkillDataClass)
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("getAllDataVideo() Error", error.toString())
+                }
+
+            }
+            databaseReference.addValueEventListener(postListener)
+        }
+
+        return dataList
+    }
+
 
 
     @Composable

@@ -108,7 +108,6 @@ fun VideoPlayerSoftSkillActivityView(titleVideo : String,subtitle: String,linkVi
                     Text(
                         text = titleVideo,
                         style = TextStyle(
-                            color = Color.Black,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         ),
@@ -145,7 +144,7 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .height(220.dp)
             ) {
                 // exo player at here
                 val exoPlayer = remember(context){

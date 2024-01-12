@@ -91,9 +91,8 @@ fun VideoOptionActivityView(){
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.videooption_sign),
+                        text = stringResource(id = R.string.selfimprove_sign),
                         style = TextStyle(
-                            color = Color.Black,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         ),

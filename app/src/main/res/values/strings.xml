@@ -15,8 +15,9 @@
     <string name="streak_sign">Streak</string>
     <string name="action_sign">Action</string>
     <string name="category_sign">Category</string>
-    <string name="softskill_sign">Soft Skills</string>
+    <string name="selfimprove_sign">Self Improve Video</string>
     <string name="hardskill_sign">Hard Skills</string>
+    <string name="recommendation_sign">Recommendation</string>
     <string name="videooption_sign">Video Option</string>
     <string name="videosoftskill_sign">Soft Skills</string>
     <string name="trancript_sign">Video Transcript</string>
