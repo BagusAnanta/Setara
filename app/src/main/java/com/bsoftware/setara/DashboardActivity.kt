@@ -92,7 +92,6 @@ fun DashboardActivityView(){
                    Text(
                        text = stringResource(id = R.string.level_sign,level),
                         style = TextStyle(
-                            color = Color.Black,
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp
                         )
