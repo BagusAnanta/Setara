@@ -1,5 +1,12 @@
 # Setara (HackFest 2024 Project)
 
+### Login User Email and Password Test
+if you want test this application, you can use this example email and password
+  - Email : usertest@gmail.com (lowercast only)
+  - Password : T3stUser# (Combine)
+
+> Note :
+  > If you want SignIn With you email, make sure you not use password from you email, **create new you passowrd** (Because this application Tester)
 
 ### Team Description :
 FutureWithGoogle have a great team inside, there are 3 great people team inside
