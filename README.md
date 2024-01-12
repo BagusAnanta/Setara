@@ -1,4 +1,4 @@
-# Setara (HackFest 2024 Project)
+# Setara V.Beta0.1 (HackFest 2024 Project)
 
 ### Login User Email and Password Test
 if you want test this application, you can use this example email and password
@@ -9,7 +9,7 @@ if you want test this application, you can use this example email and password
   > If you want SignIn With you email, make sure you not use password from you email, **create new you passowrd** (Because this application Tester)
 
 ### Team Description :
-FutureWithGoogle have a great team inside, there are 3 great people team inside
+FutureWithGoogle have a great team inside, there are 3 great people 
 
   1. Team Lead
      - Name : Bagus Ananta Hidayatullah
