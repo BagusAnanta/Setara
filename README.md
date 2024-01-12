@@ -5,7 +5,7 @@ if you want test this application, you can use this example email and password
   - Email : usertest@gmail.com (lowercast only)
   - Password : T3stUser# (Combine)
 
-> Note :
+> **Note** :
   > If you want SignIn With you email, make sure you not use password from you email, **create new you passowrd** (Because this application Tester)
 
 ### Team Description :
