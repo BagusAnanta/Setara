@@ -1,8 +1,5 @@
 # Setara V.Beta0.1
 
-## Hello There
-Hello from there, FutureWithGoogle 
-
 ### 1. Setara App Preview
 
 |<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/af7cc353-af89-491c-9291-e200709549dc" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/28e07053-2303-425b-bb4f-46a77ab3048a" width="300" height="600">|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/e448dfe4-002d-4c36-86b2-57bd898e5194" width="300" height="600">|
