@@ -1,7 +1,6 @@
 package com.bsoftware.setara
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,13 +25,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -43,8 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.bsoftware.setara.firebase.FirebaseRealtime
-import com.bsoftware.setara.sharePreference.VideoIdSharePref
+import com.bsoftware.setara.dataVideo.VideoHardSkill
+import com.bsoftware.setara.firebase.FirebaseVideo
 import com.bsoftware.setara.ui.theme.SetaraTheme
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -52,10 +49,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.google.firebase.storage.FirebaseStorage
 
-
-class VideoPlayerSoftSkillActivity : ComponentActivity() {
+class VideoPlayerHardSkillActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -72,19 +67,16 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
                     var subtitle by remember { mutableStateOf("") }
                     var urlVideo by remember { mutableStateOf("") }
 
-                    videoId = intent.getStringExtra("id").toString()
-                    Log.d("VideoId", videoId)
-                    // get a data from id
-                    FirebaseRealtime().apply {
-                        getDataVideoWithId(videoId = videoId).forEach {
+                    videoId = intent.getStringExtra("idHardSkill").toString()
+                    VideoHardSkill().apply {
+                        getVideoById(videoId = videoId).forEach {
                             title = it.title.toString()
                             subtitle = it.subtitle.toString()
                             urlVideo = it.link.toString()
 
-                            VideoPlayerSoftSkillActivityView(title,subtitle,urlVideo)
+                            VideoPlayerHardSkillActivityView(title,subtitle,urlVideo)
                         }
                     }
-
                 }
             }
         }
@@ -93,7 +85,7 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VideoPlayerSoftSkillActivityView(titleVideo : String,subtitle: String,linkVideo : String){
+fun VideoPlayerHardSkillActivityView(titleVideo : String,subtitle : String,linkVideo : String){
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -125,12 +117,12 @@ fun VideoPlayerSoftSkillActivityView(titleVideo : String,subtitle: String,linkVi
             )
         },
     ){innerPadding ->
-        VideoPlayerSoftSkillActivityContent(innerPadding = innerPadding,subtitle,linkVideo)
+        VideoPlayerHardSkillActivityContent(innerPadding = innerPadding,subtitle,linkVideo)
     }
 }
 
 @Composable
-fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle : String, urlVideo : String){
+fun VideoPlayerHardSkillActivityContent(innerPadding : PaddingValues,subtitle : String,urlVideo : String){
     val context : Context = LocalContext.current
 
     LazyColumn(
@@ -149,7 +141,8 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
                     ExoPlayer.Builder(context).build().apply {
                         val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context,context.packageName))
                         Log.d("ExoPlayer Url", urlVideo)
-                        val sourceLink = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(urlVideo))
+                        val sourceLink = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
+                            MediaItem.fromUri(urlVideo))
                         prepare(sourceLink)
                     }
                 }
@@ -174,24 +167,23 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
-fun VideoPlayerSoftSkillActivityPreview() {
+fun VideoPlayerHardSkillActivityPreview() {
     SetaraTheme {
-        val videoId by remember { mutableStateOf("Video1") }
+        val videoId by remember { mutableStateOf("VideoHardSkill1") }
 
         var title by remember { mutableStateOf("") }
         var subtitle by remember { mutableStateOf("") }
         var urlVideo by remember { mutableStateOf("") }
 
-        // get a data from id
-        FirebaseRealtime().apply {
-            getDataVideoWithId(videoId = videoId).forEach {
+        VideoHardSkill().apply {
+            getVideoById(videoId = videoId).forEach {
                 title = it.title.toString()
                 subtitle = it.subtitle.toString()
                 urlVideo = it.link.toString()
 
-                VideoPlayerSoftSkillActivityView(title,subtitle,urlVideo)
+                VideoPlayerHardSkillActivityView(title,subtitle,urlVideo)
             }
         }
     }
