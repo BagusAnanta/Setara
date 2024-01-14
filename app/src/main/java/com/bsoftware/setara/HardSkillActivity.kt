@@ -69,7 +69,7 @@ class HardSkillActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Greeting2("Android")
+                    HardSkillActivityView()
                 }
             }
         }
@@ -153,7 +153,7 @@ fun ArticleHardSkill(){
            items(items = getArticle){dataArticle ->
                Card(
                    modifier = Modifier
-                       .size(150.dp,200.dp)
+                       .size(150.dp, 200.dp)
                        .clickable {
                            // intent
                            articleId = dataArticle.articleId.toString()

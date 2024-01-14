@@ -25,6 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -36,7 +40,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.bsoftware.setara.dataClass.ArticleDataClass
+import com.bsoftware.setara.firebase.FirebaseArticle
 import com.bsoftware.setara.ui.theme.SetaraTheme
 
 class ArticleActivity : ComponentActivity() {
@@ -49,7 +55,22 @@ class ArticleActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ArticleActivityView()
+                    var articleId by remember{mutableStateOf("")}
+                    var titleArticle by remember{ mutableStateOf("") }
+                    var imageArticle by remember { mutableStateOf("") }
+                    var article by remember { mutableStateOf("") }
+
+                    articleId = intent.getStringExtra("idArticle").toString()
+
+                    FirebaseArticle().apply {
+                        getArticleById(articleId = articleId).forEach {
+                            titleArticle = it.title.toString()
+                            imageArticle = it.imageArticle.toString()
+                            article = it.article.toString()
+
+                            ArticleActivityView(imageArticle, titleArticle, article)
+                        }
+                    }
                 }
             }
         }
@@ -58,7 +79,7 @@ class ArticleActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArticleActivityView(){
+fun ArticleActivityView(imageArticle : String, titleArticle : String, article : String){
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -69,7 +90,7 @@ fun ArticleActivityView(){
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.article_sign),
+                        text = titleArticle,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
@@ -90,33 +111,33 @@ fun ArticleActivityView(){
             )
         },
     ){innerPadding ->
-        ArticleActivityContent(innerPadding = innerPadding)
+        ArticleActivityContent(innerPadding = innerPadding,imageArticle, titleArticle, article)
     }
 }
 
 @Composable
-fun ArticleActivityContent(innerPadding : PaddingValues){
+fun ArticleActivityContent(innerPadding : PaddingValues,imageArticle : String, titleArticle : String, article : String){
     LazyColumn(
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
     ){
         item {
-
+            ArticleShow(imageArticle = imageArticle, titleArticle = titleArticle, article = article)
         }
     }
 }
 
 // connect into ArticleShow
 @Composable
-fun ArticleShow(){
+fun ArticleShow(imageArticle : String, titleArticle : String, article : String){
     Column(
         modifier = Modifier
             .fillMaxSize()
     ){
         // in here, we add some article
-        Image(
-            painter = painterResource(id = R.drawable.example_thumbnail),
+        AsyncImage(
+            model = imageArticle,
             contentDescription = "ArticleImage",
             modifier = Modifier
                 .height(200.dp)
@@ -129,7 +150,7 @@ fun ArticleShow(){
                 .padding(20.dp)
         ) {
             Text(
-                text = "Title Article",
+                text = titleArticle,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -137,7 +158,7 @@ fun ArticleShow(){
             )
             Spacer(modifier = Modifier.padding(top = 10.dp))
             Text(
-                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas posuere odio quis ornare malesuada. Aenean tincidunt nunc volutpat, efficitur justo vitae, ornare odio. Nunc sed aliquam sem. Quisque dignissim lacus at tempor dignissim. Ut magna nunc, vestibulum quis consequat at, congue quis enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut in urna sagittis turpis euismod convallis non non justo. Vestibulum eu dolor nec massa lacinia fringilla in vitae lacus. Donec aliquet magna vel neque consectetur, in accumsan tellus volutpat. Proin vitae turpis a leo interdum vehicula. Donec condimentum, massa sed fermentum hendrerit, purus neque elementum magna, quis egestas purus nisl quis ligula. Vivamus id tincidunt libero. In in mattis sem, id tincidunt lorem. Cras euismod vitae velit nec commodo. Quisque mollis mauris sed malesuada faucibus."
+                text = article
             )
         }
     }
@@ -147,6 +168,6 @@ fun ArticleShow(){
 @Composable
 fun ArticleActivityPreview() {
     SetaraTheme {
-       ArticleShow()
+       // ArticleShow()
     }
 }

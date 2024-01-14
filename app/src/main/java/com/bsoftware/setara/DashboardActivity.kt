@@ -246,7 +246,9 @@ fun DashboardActivityContent(innerPadding : PaddingValues){
                     )
                 }
 
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+                    context.startActivity(Intent(context,HardSkillActivity::class.java))
+                }) {
                     Text(
                         text = stringResource(id = R.string.hardskill_sign),
                         style = TextStyle(
