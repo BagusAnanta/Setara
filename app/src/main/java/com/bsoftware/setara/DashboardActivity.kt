@@ -252,6 +252,17 @@ fun DashboardActivityContent(innerPadding : PaddingValues){
                         )
                     )
                 }
+
+                Button(onClick = {
+                    context.startActivity(Intent(context,QuizActivity::class.java))
+                }) {
+                    Text(
+                        text = stringResource(id = R.string.quiz_sign),
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
             }
         }
 

@@ -21,6 +21,7 @@
     <string name="videooption_sign">Opsi Video</string>
     <string name="videosoftskill_sign">Soft Skills</string>
     <string name="trancript_sign">Transkripsi Video</string>
+    <string name="quiz_sign">Kuis</string>
     <string name="article_sign">Artikel</string>
     <string name="title_activity_alert_dialog_costume">AlertDialogCostume</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
@@ -29,4 +30,5 @@
     <string name="title_activity_hard_skill">HardSkillActivity</string>
     <string name="title_activity_video_player_hard_skill">VideoPlayerHardSkillActivity</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="title_activity_quiz">QuizActivity</string>
 </resources>
