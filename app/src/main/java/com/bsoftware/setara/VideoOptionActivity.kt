@@ -3,7 +3,6 @@ package com.bsoftware.setara
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -30,9 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -49,11 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.bsoftware.setara.dataClass.VideoSoftSkillDataClass
-import com.bsoftware.setara.firebase.FirebaseRealtime
+import com.bsoftware.setara.dataVideo.VideoSoftSkill
 import com.bsoftware.setara.ui.theme.SetaraTheme
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 
 class VideoOptionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,38 +106,7 @@ fun VideoOptionActivityView(){
 
 @Composable
 fun VideoOptionActivityContent(innerPadding : PaddingValues){
-    val dataList = remember { mutableStateListOf<VideoSoftSkillDataClass>() }
-
-    LaunchedEffect(FirebaseRealtime().getReference()) {
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    dataList.clear()
-
-                    for (projectSnapshot in snapshot.children) {
-                        val dataMap = projectSnapshot.value as? Map<*, *>?
-
-                        if (dataMap != null) {
-                            val videoSoftSkillDataClass = VideoSoftSkillDataClass(
-                                videoId = dataMap["videoId"] as? String ?: "",
-                                title = dataMap["title"] as? String ?: "",
-                                subtitle = dataMap["subtitle"] as? String ?: "",
-                                link = dataMap["link"] as? String ?: "",
-                                thumbnail = dataMap["thumbnail"] as? String ?: ""
-                            )
-                            dataList.add(videoSoftSkillDataClass)
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("getAllDataVideo() Error", error.toString())
-            }
-
-        }
-        FirebaseRealtime().getReference().addValueEventListener(postListener)
-    }
+    val getVideoAll = VideoSoftSkill().getVideoAll()
 
     // you can get a count video from firebase in here
     LazyColumn(
@@ -151,8 +114,8 @@ fun VideoOptionActivityContent(innerPadding : PaddingValues){
         modifier = Modifier
             .fillMaxSize()
     ){
-       items(dataList){listData ->
-            VideoPreview(videoSoftSkillDataClass = listData)
+       items(getVideoAll){listVideo ->
+            VideoPreview(videoSoftSkillDataClass = listVideo)
        }
     }
 
@@ -176,7 +139,7 @@ fun VideoPreview(videoSoftSkillDataClass : VideoSoftSkillDataClass){
                     // intent
                     videoId = videoSoftSkillDataClass.videoId.toString()
                     val intent = Intent(context, VideoPlayerSoftSkillActivity::class.java)
-                    intent.putExtra("id",videoId)
+                    intent.putExtra("id", videoId)
                     context.startActivity(intent)
                 }
         ) {
