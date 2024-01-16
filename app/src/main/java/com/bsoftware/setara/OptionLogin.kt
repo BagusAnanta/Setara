@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -87,7 +88,7 @@ fun OptionLoginView(){
                 contentDescription = "OptionAsseth",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp)
+                    .height(340.dp)
             )
 
             Text(
@@ -110,12 +111,12 @@ fun OptionLoginView(){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 50.dp),
+                    .padding(top = 60.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
                 
             ){
-                OutlinedButton(
+                Button(
                     onClick = {
                         // login Activity
                         context.startActivity(Intent(context,LoginActivity::class.java))
