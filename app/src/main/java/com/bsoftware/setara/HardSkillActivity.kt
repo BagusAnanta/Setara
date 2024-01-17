@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -67,7 +69,7 @@ class HardSkillActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorResource(id = R.color.blue_100)
                 ) {
                     HardSkillActivityView()
                 }
@@ -102,11 +104,16 @@ fun HardSkillActivityView(){
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "ArrowBackIcon"
+                            contentDescription = "ArrowBackIcon",
+                            tint = Color.Black
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.blue_100),
+                    titleContentColor = Color.Black
+                )
             )
         },
     ){innerPadding ->
@@ -120,16 +127,33 @@ fun HardSkillActivityContent(innerPadding : PaddingValues){
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
+            .background(colorResource(id = R.color.blue_100))
+            .padding(10.dp)
     ){
         item{
-            Text(text = stringResource(id = R.string.article_sign))
+            Text(
+                text = stringResource(id = R.string.article_sign),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                ),
+
+            )
             Spacer(modifier = Modifier.padding(bottom = 10.dp))
             ArticleHardSkill()
         }
 
         item{
             Spacer(modifier = Modifier.padding(bottom = 20.dp))
-            Text(text = stringResource(id = R.string.recommendation_sign))
+            Text(
+                text = stringResource(id = R.string.recommendation_sign),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
             HardSkillVideoRecommend()
         }
     }
@@ -145,6 +169,7 @@ fun ArticleHardSkill(){
    Row(
        modifier = Modifier
            .fillMaxWidth()
+           .background(colorResource(id = R.color.blue_100))
    ){
        LazyRow(
            contentPadding = PaddingValues(5.dp),
@@ -177,7 +202,7 @@ fun ArticleHardSkill(){
                        Text(
                            text = dataArticle.title.toString(),
                            style = TextStyle(
-                               color = Color.Black,
+                               color = Color.White,
                                fontSize = 14.sp
                            ),
                            modifier = Modifier
@@ -224,7 +249,10 @@ fun HardSkillVideoRecommend(){
                      )
                 }
                 Text(
-                    text = dataVideo.title!!
+                    text = dataVideo.title!!,
+                    style = TextStyle(
+                        color = Color.Black
+                    )
                 )
             }
         }

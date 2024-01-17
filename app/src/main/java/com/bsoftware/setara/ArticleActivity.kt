@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -30,12 +31,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +57,7 @@ class ArticleActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorResource(id = R.color.blue_100)
                 ) {
                     var articleId by remember{mutableStateOf("")}
                     var titleArticle by remember{ mutableStateOf("") }
@@ -103,11 +107,16 @@ fun ArticleActivityView(imageArticle : String, titleArticle : String, article : 
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "ArrowBackIcon"
+                            contentDescription = "ArrowBackIcon",
+                            tint = Color.Black
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.blue_100),
+                    titleContentColor = Color.Black
+                )
             )
         },
     ){innerPadding ->
@@ -121,6 +130,7 @@ fun ArticleActivityContent(innerPadding : PaddingValues,imageArticle : String, t
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
+            .background(colorResource(id = R.color.blue_100))
     ){
         item {
             ArticleShow(imageArticle = imageArticle, titleArticle = titleArticle, article = article)
@@ -134,6 +144,7 @@ fun ArticleShow(imageArticle : String, titleArticle : String, article : String){
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(colorResource(id = R.color.blue_100))
     ){
         // in here, we add some article
         AsyncImage(
@@ -153,12 +164,17 @@ fun ArticleShow(imageArticle : String, titleArticle : String, article : String){
                 text = titleArticle,
                 style = TextStyle(
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             )
             Spacer(modifier = Modifier.padding(top = 10.dp))
             Text(
-                text = article
+                text = article,
+                style = TextStyle(
+                    textAlign = TextAlign.Justify,
+                    color = Color.Black
+                )
             )
         }
     }

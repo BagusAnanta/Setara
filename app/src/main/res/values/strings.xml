@@ -7,7 +7,8 @@
     <string name="login_text">Masuk</string>
     <string name="signup_text">Daftar</string>
     <string name="email_inputtext">Email</string>
-    <string name="password_inputtext">Password</string>
+    <string name="password_inputtext">Kata Sandi</string>
+    <string name="validate_inputtext">Konfirmasi Kata Sandi</string>
     <string name="login_button">Masuk</string>
     <string name="signup_button">Daftar</string>
     <string name="level_sign">Lv. %s</string>
@@ -31,4 +32,5 @@
     <string name="title_activity_video_player_hard_skill">VideoPlayerHardSkillActivity</string>
     <string name="title_activity_article">ArticleActivity</string>
     <string name="title_activity_quiz">QuizActivity</string>
+    <string name="title_activity_quiz_result">QuizResultActivity</string>
 </resources>

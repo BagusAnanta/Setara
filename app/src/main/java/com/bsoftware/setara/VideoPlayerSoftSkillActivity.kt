@@ -1,10 +1,12 @@
 package com.bsoftware.setara
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,8 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,11 +35,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +65,7 @@ class VideoPlayerSoftSkillActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorResource(id = R.color.blue_100)
                 ) {
                     // you get a video Id from a option before in videoOption
                     var videoId by remember { mutableStateOf("") }
@@ -111,11 +119,16 @@ fun VideoPlayerSoftSkillActivityView(titleVideo : String,subtitle: String,linkVi
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "ArrowBackIcon"
+                            contentDescription = "ArrowBackIcon",
+                            tint = Color.Black
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.blue_100),
+                    titleContentColor = Color.Black
+                )
             )
         },
     ){innerPadding ->
@@ -131,6 +144,7 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
+            .background(colorResource(id = R.color.blue_100))
     ){
         item {
             Column(
@@ -155,15 +169,47 @@ fun VideoPlayerSoftSkillActivityContent(innerPadding : PaddingValues, subtitle :
                     }
                 })
             }
-
-            Text(
-                text = stringResource(id = R.string.trancript_sign),
-                modifier = Modifier
-                    .padding(start = 10.dp,top = 10.dp)
-            )
-            Text(
-                text = subtitle
-            )
+            
+            Column {
+                Text(
+                    text = stringResource(id = R.string.trancript_sign),
+                    modifier = Modifier
+                        .padding(start = 10.dp,top = 10.dp),
+                    style = TextStyle(
+                        color = Color.Black
+                    )
+                )
+                Text(
+                    text = subtitle,
+                    modifier = Modifier
+                        .padding(20.dp),
+                    style = TextStyle(
+                        textAlign = TextAlign.Justify,
+                        color = Color.Black
+                    )
+                )
+                // Button
+                Button(
+                    onClick = {
+                        // start activity
+                        context.startActivity(Intent(context,QuizActivity::class.java))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(30.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.blue_500)
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(
+                        text = "Selanjutnya",
+                        style = TextStyle(
+                            color = Color.White
+                        )
+                    )
+                }
+            }
         }
     }
 }

@@ -15,6 +15,11 @@
         android:theme="@style/Theme.Setara"
         tools:targetApi="31">
         <activity
+            android:name=".QuizResultActivity"
+            android:exported="false"
+            android:label="@string/title_activity_quiz_result"
+            android:theme="@style/Theme.Setara" />
+        <activity
             android:name=".QuizActivity"
             android:exported="false"
             android:label="@string/title_activity_quiz"

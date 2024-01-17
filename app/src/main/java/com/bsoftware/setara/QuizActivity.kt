@@ -1,18 +1,22 @@
 package com.bsoftware.setara
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -37,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -55,7 +60,7 @@ class QuizActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = colorResource(id = R.color.blue_100)
                 ) {
                     QuizActivityView()
                 }
@@ -90,11 +95,16 @@ fun QuizActivityView(){
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "ArrowBackIcon"
+                            contentDescription = "ArrowBackIcon",
+                            tint = Color.Black
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = colorResource(id = R.color.blue_100),
+                    titleContentColor = Color.Black
+                )
             )
         },
     ){innerPadding ->
@@ -120,6 +130,7 @@ fun QuizActivityContent(innerPadding : PaddingValues){
         contentPadding = innerPadding,
         modifier = Modifier
             .fillMaxSize()
+            .background(colorResource(id = R.color.blue_100))
     ){
         item {
             QuizActivityComponent(question = question)
@@ -130,9 +141,11 @@ fun QuizActivityContent(innerPadding : PaddingValues){
 @Composable
 fun QuizActivityComponent(question : List<QuizDataClass>){
     val context : Context = LocalContext.current
+    var activity = QuizActivity()
     var progress = remember{ mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(-1) }
     var isReset by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -142,7 +155,7 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
             progress = progress.value / question.size.toFloat(),
             modifier = Modifier
                 .fillMaxWidth(),
-            color = Color.Green,
+            color = colorResource(id = R.color.blue_500),
         )
         Text(
             text =
@@ -153,7 +166,13 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
             },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 20.dp),
+            style = TextStyle(
+                color = Color.Black
+            )
         )
+        
+        Spacer(modifier = Modifier.padding(top = 5.dp))
 
         for (option in 0 until question[progress.value].option.size){
             Button(
@@ -166,13 +185,12 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
                     .padding(5.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if(selectedAnswer == option){
-                        Color.Blue
-                    } else if(isReset) {
-                        Color.White
+                        colorResource(id = R.color.blue_500)
                     } else {
                         Color.White
                     }
-                )
+                ),
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
                     text = question[progress.value].option[option]
@@ -181,13 +199,16 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
         }
 
         Row{
-            Button(onClick = {
-               try {
-                   progress.value -= 1
-               } catch (E : ArrayIndexOutOfBoundsException){
-                   Toast.makeText(context,"Soal Tidak Ada Lagi",Toast.LENGTH_SHORT).show()
-               }
-            }) {
+            Button(
+                onClick = {
+                   try {
+                       progress.value -= 1
+                   } catch (E : ArrayIndexOutOfBoundsException){
+                       Toast.makeText(context,"Soal Tidak Ada Lagi",Toast.LENGTH_SHORT).show()
+                   }
+                },
+                modifier = Modifier.padding(end = 5.dp)
+            ) {
                 Text(text = "Kembali")
             }
 
@@ -195,11 +216,12 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
                 try{
                     if(question[selectedAnswer].option[selectedAnswer] == question[progress.value].correctAnswer){
                         progress.value += 1
-                        isReset = true
+
                         // nested if in here
                         if(progress.value == question.size){
                             // intent in here
-
+                            context.startActivity(Intent(context,QuizResultActivity::class.java))
+                            activity.finish()
                         }
                     } else {
                         progress.value = 0
@@ -219,7 +241,7 @@ fun QuizActivityComponent(question : List<QuizDataClass>){
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun GreetingPreview() {
+fun QuizActivityPreview() {
     SetaraTheme {
         QuizActivityView()
     }
