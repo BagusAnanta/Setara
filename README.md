@@ -1,4 +1,3 @@
-# Setara V.Beta0.2
 
 ## Apps Preview
 
@@ -6,7 +5,7 @@
 
 |<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/dc4652f3-e275-4941-87e3-e25f76de2050" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/2804dd1b-418a-413e-a1f1-a92f19c52245" width="300" height="600">|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/f31649ab-20ad-43f8-8031-eff311d3273f" width="300" height="600">|
 
-|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/9adda5fe-bfba-453c-a4f1-008870dff9ea" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/dbb7b3af-0fad-4eeb-80cf-accd3af1e47c" width="300" height="600">|
+|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/a597d527-ffcb-49f6-bd8e-86159bf70ad9" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/90efa959-b986-47f8-8612-31201c693393" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/f8ebebaf-b2f9-43bf-bb9e-5b6e89990654" width="300" height="600">|
 
 This app now at a beta phase now, for future we develope more feature in this repository, so don't miss up 😉
 
@@ -54,7 +53,7 @@ This application have 2 operation to install :
    - After that, close and go to File Explorer (For Windows) and find a clone file
    - And then, find a file from a clone and then find folder name "app", then click
    - After that find a "debug" folder and click
-   - If you see Setara.apk click and follow the instruction
+   - If you see setara_beta_v0.2.apk click and follow the instruction
    - And Enjoy 😄
 
 ### 2. Use this if you want test this app
