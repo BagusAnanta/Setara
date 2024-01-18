@@ -1,10 +1,10 @@
-# Setara V.Beta0.1
+# Setara V.Beta0.2
 
 ## Apps Preview
 
 ### Setara App Preview 📱
 
-|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/28e07053-2303-425b-bb4f-46a77ab3048a" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/af7cc353-af89-491c-9291-e200709549dc" width="300" height="600">|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/e448dfe4-002d-4c36-86b2-57bd898e5194" width="300" height="600">|
+|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/dc4652f3-e275-4941-87e3-e25f76de2050" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/2804dd1b-418a-413e-a1f1-a92f19c52245" width="300" height="600">|<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/f31649ab-20ad-43f8-8031-eff311d3273f" width="300" height="600">|
 
 |<img src = "https://github.com/BagusAnanta/Setara/assets/68620177/9adda5fe-bfba-453c-a4f1-008870dff9ea" width="300" height="600">|<img src= "https://github.com/BagusAnanta/Setara/assets/68620177/dbb7b3af-0fad-4eeb-80cf-accd3af1e47c" width="300" height="600">|
 
